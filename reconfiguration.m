@@ -31,9 +31,14 @@ lastt2=0;   %VALUE OF THE FREE-END ANGLE AT THE SECOND TO LAST CYCD VALUE
 lastt3=0;   %VALUE OF THE FREE-END ANGLE AT THE THIRD TO LAST CYCD VALUE
 
 beta=1      %W_1/W_1 TAPERING RATIO (A VALUE OF 1 IS FOR A STRAIGTH BEAM)
-NR=100      %NUMBER OF CYCD POINTS
+NR=10      %NUMBER OF CYCD POINTS
 cymin=-2;   %SMALLEST VALUE OF CYCD = 10^cymin
 cymax=5;    %LARGEST VALUE OF CYCD = 10^cymax
+
+
+coordsY=zeros(10001,NR); % Vector to save coords
+coordsX=zeros(10001,NR); % Vector to save coords
+
 
 for nres=1:NR       %CYCD LOOP
     CYCD=10^(log10(10^cymin)+(nres-1)/(NR-1)*(log10(10^cymax)-log10(10^cymin)));
@@ -178,7 +183,9 @@ for nres=1:NR       %CYCD LOOP
     %SAVING THE RESULTS IN AN ARRAY
     resudrag(nres,1)=CYCD;
     resudrag(nres,2)=drag;
-    
+    coordsY(:,nres)=[flip(pos(:,3))];
+    coordsX(:,nres)=flip(pos(:,2));
+
     %PLOTTING THE LAST FOUND POINT ON THE RECONFIGURATION CURVE
     figure(11)
     loglog(CYCD,drag,'ok')
@@ -187,12 +194,11 @@ for nres=1:NR       %CYCD LOOP
     xlabel('C_Y C_D')
     ylabel('R')
     
-    %PLOTTING THE SHAPE OF THE DEFORMED BEAM
+    % PLOTTING THE SHAPE OF THE DEFORMED BEAM
     figure(2)
     hold on
-    plot(-pos(:,2),pos(:,3),'-k')
     plot(pos(:,2),pos(:,3),'-k')
-    %axis equal
+    axis equal
     set(gca,'DataAspectRatio',[1 1 1], 'PlotBoxAspectRatio',[13,6,13])
     set(gca,'XTickLabel',{})
     set(gca,'YTickLabel',{})
@@ -203,5 +209,13 @@ for nres=1:NR       %CYCD LOOP
     
 end
 
-%UNCOMMENT THE NEXT LINE TO SAVE THE RESULTS ON THE HARD DRIVE
-%csvwrite('basicmodel-dragVScycd-beta=1.csv',resudrag);
+% FILL 3D array TO SAVE DEFORMED CONFIGURATIONS 
+def = zeros(2, size(coordsX(1:10:end,1),1), NR);
+for nr = 1:NR
+    def(1, :, nr) =  coordsX(1:10:end,nr);
+    def(2, :, nr) =  coordsY(1:10:end,nr);
+end
+
+%COMMENT THE NEXT LINE TO SAVE THE RESULTS ON THE HARD DRIVE
+% csvwrite('basicmodel-dragVScycd-beta=1.csv',resudrag);
+save('Gosselin2010_data.mat', 'def', 'resudrag')
