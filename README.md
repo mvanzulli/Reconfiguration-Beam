@@ -1,7 +1,7 @@
 # Reconfiguration-Beam
 Matlab code for computing the reconfiguration of a cantilevered beam subjected to normal flow
 
-# Modification
+# Changes
 Some minnor changes are done to save deformed configuration plots.
 
 Gosselin F, de Langre E, Machado-Almeida BA. 2010. Drag reduction of flexible plates by reconfiguration. Journal of Fluid Mechanics 650, 319–341.
