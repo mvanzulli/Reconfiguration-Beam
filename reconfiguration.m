@@ -210,12 +210,12 @@ for nres=1:NR       %CYCD LOOP
 end
 
 % FILL 3D array TO SAVE DEFORMED CONFIGURATIONS 
-def = zeros(2, size(coordsX(1:10:end,1),1), NR);
+spanX = 10 ;
+def = zeros(2, size(coordsX(1:spanX:end,1),1), NR);
 for nr = 1:NR
-    def(1, :, nr) =  coordsX(1:10:end,nr);
-    def(2, :, nr) =  coordsY(1:10:end,nr);
+    def(1, :, nr) =  coordsX(1:spanX:end,nr);
+    def(2, :, nr) =  coordsY(1:spanX:end,nr);
 end
 
 %COMMENT THE NEXT LINE TO SAVE THE RESULTS ON THE HARD DRIVE
-% csvwrite('basicmodel-dragVScycd-beta=1.csv',resudrag);
-save('Gosselin2010_data.mat', 'def', 'resudrag')
+save('Gosselin2010_data.mat', 'def', 'resudrag', "-mat7-binary")
